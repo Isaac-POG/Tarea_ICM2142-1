@@ -1,8 +1,11 @@
 #include <SoftwareSerial.h>
 
 SoftwareSerial BT1(0,1);
-int pesoBalon = 0;
-int pesoTotal = 30;
+
+int pesoBalon;
+int pesoTotal = 10;
+double pesoTiempo;
+
 int luzRoja = 11;
 int luzVerde = 10;
 int luzAzul = 9;
@@ -18,14 +21,18 @@ void setup() {
 void loop() {
   if(Serial.available() > 0){ 
     colorRGB(0, 255, 0);
-    pesoBalon = Serial.read();
     
-    while(pesoTotal != 0){
-      pesoTotal = pesoTotal - pesoBalon;
-      Serial.println(pesoBalon);
-      BT1.println(pesoTotal);
+    pesoBalon = Serial.read();
+    pesoTiempo = pesoTotal - pesoBalon;
+    
+    while(pesoTiempo >= 0){
+      Serial.println(pesoTiempo);
       delay(1000);
+      pesoTiempo -= 1;
     }
+
+      exit(0);
+  
   }
   else{
     colorRGB(255,0,0);
